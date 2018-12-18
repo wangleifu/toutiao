@@ -10,10 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -40,6 +37,23 @@ public class NewsController {
     @Autowired
     QiniuService qiniuService;
 
+    /**
+     * 跳转到对应咨询的详情页面
+     * @param newsId 咨询Id
+     * @return
+     */
+    @RequestMapping(path = {"/news/{newsId}"}, method = {RequestMethod.GET})
+    public String newsDetail(@PathVariable("newsId") int newsId) {
+        return "detail";
+    }
+
+    /**
+     * 增加咨询信息
+     * @param image 图片连接
+     * @param title 标题
+     * @param link  内容链接
+     * @return
+     */
     @RequestMapping(path = {"/user/addNews/"}, method = {RequestMethod.POST})
     @ResponseBody
     public String addNews(@RequestParam("image") String image,
@@ -66,6 +80,11 @@ public class NewsController {
         }
     }
 
+    /**
+     * 获取图片
+     * @param imgName  要获取的图片链接
+     * @param response 将图片copy到response中，传到前端
+     */
     @RequestMapping(path = {"/image"}, method = {RequestMethod.GET})
     @ResponseBody
     public void getImage(@RequestParam("name") String imgName,
@@ -80,12 +99,16 @@ public class NewsController {
 
     }
 
-
+    /**
+     * 上传图片
+     * @param file 图片文件
+     * @return
+     */
     @RequestMapping(path = {"/uploadImage/"}, method = {RequestMethod.POST})
     @ResponseBody
     public String uploadImage(@RequestParam("file")MultipartFile file) {
         try {
-            //String fileURL = newsService.saveImage(file);
+            /*String fileURL = newsService.saveImage(file);*/
             String fileURL = qiniuService.saveImage(file);
             if (fileURL == null) {
                 return ToutiaoUtil.getJSONString(1, "上传图片失败！");

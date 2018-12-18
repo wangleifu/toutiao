@@ -28,6 +28,15 @@ public class LoginController {
     @Autowired
     UserService userService;
 
+    /**
+     * 注册用户
+     * @param model
+     * @param username 用户名
+     * @param password 密码
+     * @param rememberme 是否记住密码
+     * @param response 应答
+     * @return
+     */
     @RequestMapping(path = {"/reg/"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String reg(Model model, @RequestParam("username") String username,
@@ -54,6 +63,15 @@ public class LoginController {
         }
     }
 
+    /**
+     * 登录
+     * @param model
+     * @param username 用户名
+     * @param password 密码
+     * @param rememberme 是否记住密码
+     * @param response 应答
+     * @return
+     */
     @RequestMapping(path = {"/login/"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String login(Model model, @RequestParam("username") String username,
@@ -80,6 +98,12 @@ public class LoginController {
         }
     }
 
+    /**
+     * 登出
+     * 删除token，并重定向（跳转）到主页
+     * @param ticket 跟踪记录用户转台的token
+     * @return
+     */
     @RequestMapping(path = {"/logout/"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String logout(@CookieValue("ticket") String ticket) {
         userService.logout(ticket);
