@@ -1,6 +1,9 @@
 package com.nowcoder.controller;
 
+import com.nowcoder.model.HostHolder;
+import com.nowcoder.model.News;
 import com.nowcoder.service.NewsService;
+import com.nowcoder.service.QiniuService;
 import com.nowcoder.util.ToutiaoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Date;
 
 /**
  * 资讯相关，上传图片
@@ -29,6 +33,38 @@ public class NewsController {
 
     @Autowired
     NewsService newsService;
+
+    @Autowired
+    HostHolder hostHolder;
+
+    @Autowired
+    QiniuService qiniuService;
+
+    @RequestMapping(path = {"/user/addNews/"}, method = {RequestMethod.POST})
+    @ResponseBody
+    public String addNews(@RequestParam("image") String image,
+                          @RequestParam("title") String title,
+                          @RequestParam("link")  String link) {
+        try {
+            News news = new News();
+            if (hostHolder.getUser() != null)
+            {
+                news.setUserId(hostHolder.getUser().getId());
+            } else {
+                // 匿名ID
+                news.setUserId(3);
+            }
+            news.setImage(image);
+            news.setCreatedDate(new Date());
+            news.setTitle(title);
+            news.setLink(link);
+            newsService.addNews(news);
+            return ToutiaoUtil.getJSONString(0);
+        } catch (Exception e) {
+            logger.error("添加资讯错误" + e.getMessage());
+            return ToutiaoUtil.getJSONString(1, "发布失败！");
+        }
+    }
 
     @RequestMapping(path = {"/image"}, method = {RequestMethod.GET})
     @ResponseBody
@@ -44,11 +80,13 @@ public class NewsController {
 
     }
 
+
     @RequestMapping(path = {"/uploadImage/"}, method = {RequestMethod.POST})
     @ResponseBody
     public String uploadImage(@RequestParam("file")MultipartFile file) {
         try {
-            String fileURL = newsService.saveImage(file);
+            //String fileURL = newsService.saveImage(file);
+            String fileURL = qiniuService.saveImage(file);
             if (fileURL == null) {
                 return ToutiaoUtil.getJSONString(1, "上传图片失败！");
             }

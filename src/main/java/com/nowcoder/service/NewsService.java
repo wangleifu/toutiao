@@ -27,6 +27,18 @@ public class NewsService {
         return newsDAO.selectByUserIdAndOffset(userId, offset, limit);
     }
 
+    public int addNews(News news) {
+        newsDAO.addNews(news);
+        return news.getId();
+    }
+
+
+    /**
+     * 保存图片到本地
+     * @param file
+     * @return
+     * @throws IOException
+     */
     public String saveImage(MultipartFile file) throws IOException {
         // 找的后缀名前的“.”
         int dotPos = file.getOriginalFilename().lastIndexOf(".");
@@ -40,8 +52,8 @@ public class NewsService {
             return null;
         }
 
-        //String fileName = UUID.randomUUID().toString().replaceAll("-", "") + "." + fileExt;
-        String fileName = file.getOriginalFilename();
+        String fileName = UUID.randomUUID().toString().replaceAll("-", "") + "." + fileExt;
+        //String fileName = file.getOriginalFilename();
         Files.copy(file.getInputStream(), new File(ToutiaoUtil.IMG_DIR + fileName).toPath(),
                 StandardCopyOption.REPLACE_EXISTING);
 

@@ -14,6 +14,7 @@ import java.util.Map;
 public class ToutiaoUtil {
     private static final Logger logger = LoggerFactory.getLogger(ToutiaoUtil.class);
 
+    public static String QINIU_DOMAIN_PREFIX = "http://pjx5kp6lj.bkt.clouddn.com/";
     public static String TOUTIAO_DOMAIN = "http://127.0.0.1:8080/";
     public static String IMG_DIR = "F:/upload/";
     private static String[] IMAGE_FILE_EXT = {"png", "bmp", "jpg", "jpeg"};
