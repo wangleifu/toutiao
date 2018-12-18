@@ -5,9 +5,21 @@ package com.nowcoder.model;
  */
 public class User {
     private int id;
+    /**
+     * 登录名
+     */
     private String name;
+    /**
+     * 登录密码
+     */
     private String password;
+    /**
+     * 密码加密
+     */
     private String salt;
+    /**
+     * 头像连接地址
+     */
     private String headUrl;
 
     public User() {

@@ -3,13 +3,31 @@ package com.nowcoder.model;
 import java.util.Date;
 
 /**
- * Created by nowcoder on 2016/7/3.
+ * 登录的token，在设定时间内免密登录
+ *
+ * @Author wangleifu
+ * @data 2018/12/18
  */
 public class LoginTicket {
+    /**
+     * 唯一标识符
+     */
     private int id;
+    /**
+     * 对应的用户的id
+     */
     private int userId;
+    /**
+     * 到期时间
+     */
     private Date expired;
-    private int status;// 0有效，1无效
+    /**
+     * 判断当前ticket是否有效： 0有效，1无效
+     */
+    private int status;
+    /**
+     * ticket标识
+     */
     private String ticket;
 
     public String getTicket() {
