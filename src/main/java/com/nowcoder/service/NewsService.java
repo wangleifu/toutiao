@@ -32,6 +32,20 @@ public class NewsService {
         return news.getId();
     }
 
+    public News getById(int newsId) {
+        return newsDAO.getById(newsId);
+    }
+
+    /**
+     * 更新资讯的评论数量
+     * @param id 被评论的资讯id
+     * @param count 评论数量
+     * @return
+     */
+    public int updateCommentCount(int id, int count) {
+        return newsDAO.updateCommentCount(id, count);
+    }
+
 
     /**
      * 保存图片到本地
