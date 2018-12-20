@@ -50,4 +50,13 @@ public interface NewsDAO {
      */
     List<News> selectByUserIdAndOffset(@Param("userId") int userId, @Param("offset") int offset,
                                        @Param("limit") int limit);
+
+    /**
+     * 更新点赞总数
+     * @param id  当前资讯标识符
+     * @param likeCount 点赞总数
+     * @return
+     */
+    @Update({"update ", TABLE_NAME, " set like_count = #{likeCount} where id=#{id}"})
+    int updateLikeCount(@Param("id") int id, @Param("likeCount") int likeCount);
 }

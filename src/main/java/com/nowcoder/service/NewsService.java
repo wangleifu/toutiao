@@ -46,6 +46,16 @@ public class NewsService {
         return newsDAO.updateCommentCount(id, count);
     }
 
+    /**
+     * 更新资讯的点赞数量
+     * @param id 被点赞的资讯标识符id
+     * @param likeCount 点赞数量
+     * @return
+     */
+    public int updateLikeCount(int id, int likeCount) {
+        return newsDAO.updateLikeCount(id, likeCount);
+    }
+
 
     /**
      * 保存图片到本地

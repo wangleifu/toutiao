@@ -1,8 +1,10 @@
 package com.nowcoder.controller;
 
+import com.nowcoder.model.EntityType;
 import com.nowcoder.model.HostHolder;
 import com.nowcoder.model.News;
 import com.nowcoder.model.ViewObject;
+import com.nowcoder.service.LikeService;
 import com.nowcoder.service.NewsService;
 import com.nowcoder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +19,32 @@ import java.util.List;
 @Controller
 public class HomeController {
     @Autowired
-    NewsService newsService;
+    private NewsService newsService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    HostHolder hostHolder;
+    private LikeService likeService;
+
+    @Autowired
+    private HostHolder hostHolder;
 
     private List<ViewObject> getNews(int userId, int offset, int limit) {
         List<News> newsList = newsService.getLatestNews(userId, offset, limit);
-
+        int localUserId = hostHolder.getUser() != null ? hostHolder.getUser().getId() : 0;
         List<ViewObject> vos = new ArrayList<>();
         for (News news : newsList) {
             ViewObject vo = new ViewObject();
             vo.set("news", news);
             vo.set("user", userService.getUser(news.getUserId()));
+
+            if (localUserId != 0) {
+                int like = likeService.getStatus(localUserId, EntityType.ENTITY_NEWS, news.getId());
+                vo.set("like", like);
+            } else {
+                vo.set("like", 0);
+            }
             vos.add(vo);
         }
         return vos;
