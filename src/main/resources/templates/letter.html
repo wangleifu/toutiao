@@ -14,7 +14,7 @@
                             </a>
                             -->
                             <a href="/msg/detail?conversationId=$!{conversation.conversation.conversationId}">
-                                共$!{conversation.conversation.id}条会话
+                                共$!{conversation.totalCount}条会话
                             </a>
                         </div>
                     </div>
@@ -22,7 +22,7 @@
                         <span class="msg-num">
                             $!{conversation.unreadCount}
                         </span>
-                        <a class="list-head" href="/user/$!{conversation.userId}">
+                        <a class="list-head" href="/user/$!{conversation.targetId}">
                             <img alt="头像" src="$!{conversation.headUrl}">
                         </a>
                     </div>

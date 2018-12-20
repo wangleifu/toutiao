@@ -43,9 +43,29 @@ public interface MessageDAO {
      * @param limit  分页使用，数量
      * @return
      */
-    @Select("select")
+    @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME,
+            " where id in (select max(id) from ", TABLE_NAME, " where from_id=#{userId} or to_id=#{userId} group by conversation_id)",
+            "order by id desc limit #{offset}, #{limit}"})
     List<Message> getConversationList(@Param("userId") int userId,
                                       @Param("offset") int offset,
                                       @Param("limit") int limit);
+
+    /**
+     * 当前用户在当前回话中未读信息数量
+     * @param userId  用户id
+     * @param conversationId 会话id
+     * @return
+     */
+    @Select({"select count(id) from ", TABLE_NAME, " where has_read = 0 and to_id=#{userId} and conversation_id=#{conversationId}"})
+    int getConversationUnReadCount(@Param("userId") int userId, @Param("conversationId") String conversationId);
+
+    /**
+     * 当前用户在当前回话中信息总量
+     * @param userId 用户id
+     * @param conversationId 会话id
+     * @return
+     */
+    @Select({"select count(id) from ", TABLE_NAME, " where has_read = 0 and to_id=#{userId} and conversation_id=#{conversationId}"})
+    int getConversationTotalCount(@Param("userId") int userId, @Param("conversationId") String conversationId);
 
 }
