@@ -79,10 +79,11 @@
             <version>7.2.17</version>
         </dependency>
 
-        <!-- Actuator 运行中监控依赖 -->
+        <!-- 邮件收发 java依赖包 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
         </dependency>
 
 		<dependency>
