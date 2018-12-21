@@ -65,7 +65,7 @@ public interface MessageDAO {
      * @param conversationId 会话id
      * @return
      */
-    @Select({"select count(id) from ", TABLE_NAME, " where has_read = 0 and to_id=#{userId} and conversation_id=#{conversationId}"})
+    @Select({"select count(id) from ", TABLE_NAME, " where has_read = 0 and conversation_id=#{conversationId}"})
     int getConversationTotalCount(@Param("userId") int userId, @Param("conversationId") String conversationId);
 
 }

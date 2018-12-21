@@ -23,7 +23,7 @@ public class LikeService {
      * @param entityId 类型id
      * @return 如果喜欢返回1， 不喜欢返回-1， 否则返回0
      */
-    public int getStatus(int userId, int entityType, int entityId) {
+    public int getLikeStatus(int userId, int entityType, int entityId) {
         String likeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
         if (jedisAdapter.sismember(likeKey, String.valueOf(userId))) {
             return 1;
