@@ -95,7 +95,7 @@ public class LoginController {
                 response.addCookie(cookie);
 //                eventProducer.fireEvent(new
 //                        EventModel(EventType.LOGIN).setActorId((int) map.get("userId"))
-//                        .setExt("username", "牛客").setExt("to", "zjuyxy@qq.com"));
+//                        .setExt("username", "牛客").setExt("to", "1362135831@qq.com"));
                 return ToutiaoUtil.getJSONString(0, "登录成功");
             } else {
                 return ToutiaoUtil.getJSONString(1, map);

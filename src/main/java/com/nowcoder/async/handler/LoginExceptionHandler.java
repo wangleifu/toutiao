@@ -6,12 +6,11 @@ import com.nowcoder.async.EventType;
 import com.nowcoder.model.Message;
 import com.nowcoder.service.MessageService;
 import com.nowcoder.service.UserService;
+import com.nowcoder.util.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 登录异常 处理器
@@ -27,6 +26,9 @@ public class LoginExceptionHandler implements EventHandler {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MailSender mailSender;
+
 
     @Override
     public void doHandler(EventModel model) {
@@ -40,8 +42,13 @@ public class LoginExceptionHandler implements EventHandler {
                 .append(" , 您上次登录的IP异常，如非本人操作，请及时修改密码！").toString());
         message.setCreatedDate(new Date());
         message.setConversationId(fromId < toId ? String.format("%d_%d", fromId, toId) : String.format("%d_%d", toId, fromId));
-
         messageService.addMessage(message);
+
+        // 发送邮件
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("username", model.getExt("username"));
+        mailSender.sendWithHTMLTemplate(model.getExt("to"), "登陆异常",
+                "mails/loginException.html", map);
     }
 
     @Override
