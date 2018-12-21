@@ -40,7 +40,7 @@ public class HomeController {
             vo.set("user", userService.getUser(news.getUserId()));
 
             if (localUserId != 0) {
-                int like = likeService.getStatus(localUserId, EntityType.ENTITY_NEWS, news.getId());
+                int like = likeService.getLikeStatus(localUserId, EntityType.ENTITY_NEWS, news.getId());
                 vo.set("like", like);
             } else {
                 vo.set("like", 0);

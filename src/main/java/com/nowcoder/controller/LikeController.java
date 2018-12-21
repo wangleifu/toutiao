@@ -1,5 +1,8 @@
 package com.nowcoder.controller;
 
+import com.nowcoder.async.EventModel;
+import com.nowcoder.async.EventProducer;
+import com.nowcoder.async.EventType;
 import com.nowcoder.model.EntityType;
 import com.nowcoder.model.HostHolder;
 import com.nowcoder.service.LikeService;
@@ -33,6 +36,9 @@ public class LikeController {
     @Autowired
     private NewsService newsService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
     @RequestMapping(path = {"/like"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String like(@Param("newsId") int newsId) {
@@ -40,6 +46,10 @@ public class LikeController {
             int userId = hostHolder.getUser().getId();
             long likeCount = likeService.like(userId, EntityType.ENTITY_NEWS, newsId);
             newsService.updateLikeCount(newsId, (int)likeCount);
+
+            eventProducer.fireEvent(new EventModel(EventType.LIKE).setActorId(userId).setEntityOwnerId(newsService.getById(newsId).getUserId())
+                    .setEntityType(EntityType.ENTITY_NEWS).setEntityId(newsId));
+
             return ToutiaoUtil.getJSONString(0, String.valueOf(likeCount));
         } catch (Exception e) {
             logger.error("点赞异常" + e.getMessage());
@@ -56,8 +66,8 @@ public class LikeController {
             newsService.updateLikeCount(newsId, (int)likeCount);
             return ToutiaoUtil.getJSONString(0, String.valueOf(likeCount));
         } catch (Exception e) {
-            logger.error("点赞异常" + e.getMessage());
-            return ToutiaoUtil.getJSONString(1, "点赞异常");
+            logger.error("点踩异常" + e.getMessage());
+            return ToutiaoUtil.getJSONString(1, "点踩异常");
         }
 
     }
