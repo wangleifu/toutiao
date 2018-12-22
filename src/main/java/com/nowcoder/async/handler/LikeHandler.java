@@ -33,15 +33,14 @@ public class LikeHandler implements EventHandler {
     @Override
     public void doHandler(EventModel model) {
         Message message = new Message();
-        int fromId = model.getActorId();
-        //int toId = model.getEntityOwnerId();
-        int toId = model.getActorId();
+        int fromId = 3;
+        int toId = model.getEntityOwnerId();
         message.setFromId(fromId);
         message.setToId(toId);
         message.setConversationId(fromId < toId ? String.format("%d_%d", fromId, toId) : String.format("%d_%d", toId, fromId));
         message.setCreatedDate(new Date());
         StringBuilder sb = new StringBuilder();
-        User user = userService.getUser(fromId);
+        User user = userService.getUser(model.getActorId());
         message.setContent(sb.append("用户").append(user.getName()).append("赞了你的资讯：")
                 .append(newsService.getById(model.getEntityId()).getLink()).toString());
         messageService.addMessage(message);
