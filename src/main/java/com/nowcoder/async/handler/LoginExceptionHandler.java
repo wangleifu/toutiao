@@ -7,6 +7,7 @@ import com.nowcoder.model.Message;
 import com.nowcoder.service.MessageService;
 import com.nowcoder.service.UserService;
 import com.nowcoder.util.MailSender;
+import com.nowcoder.util.ToutiaoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +34,7 @@ public class LoginExceptionHandler implements EventHandler {
     @Override
     public void doHandler(EventModel model) {
         Message message = new Message();
-        int fromId = 5;
+        int fromId = ToutiaoUtil.SYS_ADMIN_ID;
         int toId = model.getActorId();
         message.setToId(toId);
         message.setFromId(fromId);

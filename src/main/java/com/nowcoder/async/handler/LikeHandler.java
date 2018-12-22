@@ -8,6 +8,7 @@ import com.nowcoder.model.User;
 import com.nowcoder.service.MessageService;
 import com.nowcoder.service.NewsService;
 import com.nowcoder.service.UserService;
+import com.nowcoder.util.ToutiaoUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +34,7 @@ public class LikeHandler implements EventHandler {
     @Override
     public void doHandler(EventModel model) {
         Message message = new Message();
-        int fromId = 3;
+        int fromId = ToutiaoUtil.SYS_ADMIN_ID;
         int toId = model.getEntityOwnerId();
         message.setFromId(fromId);
         message.setToId(toId);

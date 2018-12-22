@@ -19,6 +19,8 @@ public class ToutiaoUtil {
     public static String IMG_DIR = "F:/upload/";
     private static String[] IMAGE_FILE_EXT = {"png", "bmp", "jpg", "jpeg"};
 
+    public static int SYS_ADMIN_ID = 3;
+
     public static boolean isFileAllowed(String fileExt) {
         for (String ext : IMAGE_FILE_EXT) {
             if(ext.equals(fileExt)) {
