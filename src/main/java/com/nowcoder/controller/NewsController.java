@@ -1,5 +1,8 @@
 package com.nowcoder.controller;
 
+import com.nowcoder.async.EventModel;
+import com.nowcoder.async.EventProducer;
+import com.nowcoder.async.EventType;
 import com.nowcoder.model.*;
 import com.nowcoder.service.*;
 import com.nowcoder.util.ToutiaoUtil;
@@ -47,6 +50,9 @@ public class NewsController {
 
     @Autowired
     private LikeService likeService;
+
+    @Autowired
+    private EventProducer eventProducer;
 
 
     /**
@@ -171,6 +177,10 @@ public class NewsController {
             comment.setCreatedDate(new Date());
             comment.setStatus(0);
             commentService.addComment(comment);
+
+            eventProducer.fireEvent(new EventModel(EventType.COMMENT).setActorId(hostHolder.getUser().getId())
+                    .setEntityOwnerId(newsService.getById(newsId).getUserId())
+                    .setEntityType(EntityType.ENTITY_NEWS).setEntityId(newsId).setExt("content", content));
 
             // 更新news的评论数量，以后用异步实现
             int count = commentService.getCommentCount(newsId, EntityType.ENTITY_NEWS);
