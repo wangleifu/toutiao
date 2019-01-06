@@ -24,6 +24,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- 日志依赖 logback -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
@@ -79,13 +86,18 @@
             <version>7.2.17</version>
         </dependency>
 
-		<!-- 邮件收发 java依赖包 -->
+        <!-- 邮件收发 java依赖包 -->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>1.4.7</version>
         </dependency>
 
+        <!-- Spring 参数监控 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
