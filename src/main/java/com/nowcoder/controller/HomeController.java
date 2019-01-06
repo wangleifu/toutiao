@@ -7,6 +7,8 @@ import com.nowcoder.model.ViewObject;
 import com.nowcoder.service.LikeService;
 import com.nowcoder.service.NewsService;
 import com.nowcoder.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,8 @@ public class HomeController {
 
     @Autowired
     private HostHolder hostHolder;
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     private List<ViewObject> getNews(int userId, int offset, int limit) {
         List<News> newsList = newsService.getLatestNews(userId, offset, limit);
@@ -53,6 +57,7 @@ public class HomeController {
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String index(Model model,
                         @RequestParam(value = "pop", defaultValue = "0") int pop) {
+        logger.info("---HomeController index---");
         model.addAttribute("vos", getNews(0, 0, 10));
         model.addAttribute("pop", pop);
         return "home";
