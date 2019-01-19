@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.*;
+
+import static java.util.concurrent.Executors.*;
 
 /**
  * 处理事件队列
@@ -55,14 +58,14 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
                         config.put(type, new ArrayList<>());
                     }
                     config.get(type).add(entry.getValue());
+
                 }
             }
         }
 
         // 启动线程去消费事件
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+        ExecutorService service = newSingleThreadExecutor();
+        service.submit(() -> {
                 // 从队列一直消费
                 while (true) {
                     String key = RedisKeyUtil.getEventQueneKey();
@@ -84,10 +87,8 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
                         }
                     }
                 }
-            }
         });
-
-        thread.start();
+        service.shutdown();
 
     }
 
