@@ -95,7 +95,8 @@ public class UserService {
         LoginTicket ticket = new LoginTicket();
         ticket.setUserId(userId);
         Date date = new Date();
-        date.setTime(date.getTime() + 1000*3600*24);
+        /*登录token的有效时间（单位：毫秒）： 3天*/
+        date.setTime(date.getTime() + 1000*3600*24*3);
         ticket.setExpired(date);
         ticket.setStatus(0);
         ticket.setTicket(UUID.randomUUID().toString().replaceAll("-", ""));

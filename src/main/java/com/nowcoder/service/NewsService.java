@@ -64,23 +64,12 @@ public class NewsService {
      * @throws IOException
      */
     public String saveImage(MultipartFile file) throws IOException {
-        // 找的后缀名前的“.”
-        int dotPos = file.getOriginalFilename().lastIndexOf(".");
-        if (dotPos < 0) {
-            return null;
-        }
-        // 找到后缀名
-        String fileExt = file.getOriginalFilename().substring(dotPos + 1).toLowerCase();
-        // 判断后缀名是否符合要求
-        if (!ToutiaoUtil.isFileAllowed(fileExt)) {
-            return null;
-        }
-
-        String fileName = UUID.randomUUID().toString().replaceAll("-", "") + "." + fileExt;
+        String fileName = ToutiaoUtil.parseFileName(file);
         //String fileName = file.getOriginalFilename();
         Files.copy(file.getInputStream(), new File(ToutiaoUtil.IMG_DIR + fileName).toPath(),
                 StandardCopyOption.REPLACE_EXISTING);
 
-        return ToutiaoUtil.TOUTIAO_DOMAIN + "image?name=" + fileName;
+        //return ToutiaoUtil.TOUTIAO_DOMAIN + "image?name=" + fileName;
+        return "/image?name=" + fileName;
     }
 }

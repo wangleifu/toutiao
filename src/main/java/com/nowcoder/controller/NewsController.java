@@ -64,8 +64,8 @@ public class NewsController {
     @ResponseBody
     public String uploadImage(@RequestParam("file")MultipartFile file) {
         try {
-            /*String fileURL = newsService.saveImage(file);*/
-            String fileURL = qiniuService.saveImage(file);
+            String fileURL = newsService.saveImage(file);
+            //String fileURL = qiniuService.saveImage(file);
             if (fileURL == null) {
                 return ToutiaoUtil.getJSONString(1, "上传图片失败！");
             }
@@ -132,7 +132,7 @@ public class NewsController {
      * @param newsId 咨询Id
      * @return
      */
-    @RequestMapping(path = {"/news/{newsId}"}, method = {RequestMethod.GET})
+    @RequestMapping(path = {"/news/{newsId}"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String newsDetail(@PathVariable("newsId") int newsId, Model model) {
         News news = newsService.getById(newsId);
         if(news != null) {

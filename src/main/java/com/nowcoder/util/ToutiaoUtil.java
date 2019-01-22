@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.nowcoder.controller.LoginController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.MessageDigest;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by nowcoder on 2016/7/3.
@@ -30,6 +32,23 @@ public class ToutiaoUtil {
         return false;
     }
 
+    public static String parseFileName(MultipartFile file) {
+        // 找的后缀名前的“.”
+        int dotPos = file.getOriginalFilename().lastIndexOf(".");
+        if (dotPos < 0) {
+            return null;
+        }
+        // 找到后缀名
+        String fileExt = file.getOriginalFilename().substring(dotPos + 1).toLowerCase();
+        // 判断后缀名是否符合要求
+        if (!ToutiaoUtil.isFileAllowed(fileExt)) {
+            return null;
+        }
+
+        String fileName = UUID.randomUUID().toString().replaceAll("-", "") + "." + fileExt;
+
+        return fileName;
+    }
     public static String getJSONString(int code) {
         JSONObject json = new JSONObject();
         json.put("code", code);

@@ -54,19 +54,7 @@ public class QiniuService {
      */
     public String saveImage(MultipartFile file) throws IOException {
         try {
-            // 找的后缀名前的“.”
-            int dotPos = file.getOriginalFilename().lastIndexOf(".");
-            if (dotPos < 0) {
-                return null;
-            }
-            // 找到后缀名
-            String fileExt = file.getOriginalFilename().substring(dotPos + 1).toLowerCase();
-            // 判断后缀名是否符合要求
-            if (!ToutiaoUtil.isFileAllowed(fileExt)) {
-                return null;
-            }
-            String fileName = UUID.randomUUID().toString().replaceAll("-", "") + "." + fileExt;
-
+            String fileName = ToutiaoUtil.parseFileName(file);
 
             // 调用put方法上传
             Response response = uploadManager.put(file.getBytes(), fileName, getUpToken());
