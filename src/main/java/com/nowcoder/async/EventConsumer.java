@@ -1,6 +1,7 @@
 package com.nowcoder.async;
 
 import com.alibaba.fastjson.JSON;
+import com.nowcoder.async.util.AsyncUtil;
 import com.nowcoder.util.JedisAdapter;
 import com.nowcoder.util.RedisKeyUtil;
 import org.slf4j.Logger;
@@ -38,30 +39,9 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
     @Override
     public void afterPropertiesSet() throws Exception {
         /**
-         * 找出所有实现了EventHandler接口的类 beans
+         * 从application中找出所有实现了EventHandler接口的类 beans，放进config中
          */
-        Map<String, EventHandler> beans = applicationContext.getBeansOfType(EventHandler.class);
-        if (beans != null) {
-            /**
-             * 遍历每一个EventHandler类
-              */
-            for (Map.Entry<String, EventHandler> entry : beans.entrySet()) {
-                /**
-                 * 获取当前EventHandler类支持的types
-                 */
-                List<EventType> types = entry.getValue().getSupportEventTypes();
-                /**
-                 * 将当前handler类和其所支持的type对应起来
-                 */
-                for (EventType type : types) {
-                    if (!config.containsKey(type)) {
-                        config.put(type, new ArrayList<>());
-                    }
-                    config.get(type).add(entry.getValue());
-
-                }
-            }
-        }
+        AsyncUtil.getEventHandlerBeans(applicationContext, config);
 
         // 启动线程去消费事件
         ExecutorService service = newSingleThreadExecutor();
@@ -91,6 +71,8 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
         service.shutdown();
 
     }
+
+
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

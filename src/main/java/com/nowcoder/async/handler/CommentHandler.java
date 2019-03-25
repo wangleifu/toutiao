@@ -30,8 +30,6 @@ public class CommentHandler implements EventHandler {
     @Autowired
     private UserService userService;
     @Autowired
-    private CommentService commentService;
-    @Autowired
     private NewsService newsService;
 
 
