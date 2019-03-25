@@ -4,8 +4,6 @@ import com.nowcoder.model.LoginTicket;
 import com.nowcoder.model.User;
 import org.apache.ibatis.annotations.*;
 
-import java.util.Date;
-
 /**
  * Created by nowcoder on 2016/7/2.
  */
@@ -24,7 +22,4 @@ public interface LoginTicketDAO {
 
     @Update({"update ", TABLE_NAME, " set status=#{status} where ticket=#{ticket}"})
     void updateStatus(@Param("ticket") String ticket, @Param("status") int status);
-
-    @Update({"update ", TABLE_NAME, " set expired=#{expired} where ticket=#{ticket}"})
-    void updateExpired(@Param("ticket") String ticket, @Param("expired") Date expired);
 }
