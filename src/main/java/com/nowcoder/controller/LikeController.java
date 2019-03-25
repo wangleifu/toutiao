@@ -49,6 +49,8 @@ public class LikeController {
 
             eventProducer.fireEvent(new EventModel(EventType.LIKE).setActorId(userId).setEntityOwnerId(newsService.getById(newsId).getUserId())
                     .setEntityType(EntityType.ENTITY_NEWS).setEntityId(newsId));
+//            rocketMQProducer.fireEvent(new EventModel(EventType.LIKE).setActorId(userId).setEntityOwnerId(newsService.getById(newsId).getUserId())
+//                    .setEntityType(EntityType.ENTITY_NEWS).setEntityId(newsId));
 
             return ToutiaoUtil.getJSONString(0, String.valueOf(likeCount));
         } catch (Exception e) {
